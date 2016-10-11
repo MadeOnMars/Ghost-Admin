@@ -80,7 +80,22 @@
                 </span>
             </div>
             {{/unless}}
-
+            <div class="form-group for-select">
+                <label for="language-list">Language</label>
+                <span class="input-icon icon-language">
+                    <span class="gh-select" tabindex="0">
+                      {{gh-select-native
+                          name="post-setting-language"
+                          id="language-list"
+                          content=languages
+                          optionValuePath="id"
+                          optionLabelPath="name"
+                          selection=selectedLanguage
+                          action="changeLanguage"
+                      }}
+                    </span>
+                </span>
+            </div>
             <ul class="nav-list nav-list-block">
                 {{#gh-tab tagName="li" classNames="nav-list-item"}}
                     <button type="button">

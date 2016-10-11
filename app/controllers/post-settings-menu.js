@@ -8,6 +8,8 @@ import injectController from 'ember-controller/inject';
 import {htmlSafe} from 'ember-string';
 import observer from 'ember-metal/observer';
 
+import config from 'ghost-admin/config/environment';
+
 import {parseDateString} from 'ghost-admin/utils/date-formatting';
 import SettingsMenuMixin from 'ghost-admin/mixins/settings-menu-controller';
 import boundOneWay from 'ghost-admin/utils/bound-one-way';
@@ -25,7 +27,29 @@ export default Controller.extend(SettingsMenuMixin, {
     session: injectService(),
     slugGenerator: injectService(),
     timeZone: injectService(),
+    initializeSelectedLanguage: observer('model', function () {
+      // TODO: Select the proper language
+      Ember.Logger.log('We should select the right language here');
+    }),
+    languages: computed(function(){
+      var langs = config.APP.locales;
+      var lang = this.get('model.language');
 
+      if(langs.indexOf(lang) > 0){
+        langs.splice(langs.indexOf(lang), 1);
+        langs.unshift(lang);
+      }
+
+      var res = [];
+      for(var i=0; i < langs.length; i++){
+        var obj = {
+          id: langs[i],
+          name: langs[i]
+        };
+        res.push(obj);
+      }
+      return res;
+    }),
     initializeSelectedAuthor: observer('model', function () {
         return this.get('model.author').then((author) => {
             this.set('selectedAuthor', author);
@@ -420,7 +444,9 @@ export default Controller.extend(SettingsMenuMixin, {
                 model.rollbackAttributes();
             });
         },
-
+        changeLanguage(newLanguage) {
+            this.set('model.language', newLanguage.name);
+        },
         addTag(tagName, index) {
             let currentTags = this.get('model.tags');
             let currentTagNames = currentTags.map((tag) => {
