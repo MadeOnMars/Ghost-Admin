@@ -49,6 +49,7 @@ Session.vim
 /libpeerconnection.log
 npm-debug.log
 testem.log
+if-you-need-to-delete-this-open-an-issue-async-disk-cache/
 
 # built by grunt
 public/assets/img/contributors/
